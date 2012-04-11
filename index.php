@@ -1,40 +1,40 @@
 <?php
-$users = explode("\n", file_get_contents('kürzel.txt'));
-$question = file_get_contents('question.txt');
+
+require('common.php');
+
+$id = basename($_GET['id']);
+$user = str_replace("\n", '', $_SERVER['PHP_AUTH_USER']);
+
+if ( empty($id) or empty($user) )
+	die('ID and HTTP basic auth user is required');
+
+// Add current user to the user list of this poll if he/she isn't already in there
+read_and_update_data($id, function($data) use($user) {
+	if ( !in_array($user, $data['users']) ){
+		$data['users'][$user] = false;
+		return $data;
+	}
+});
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
 	<title>Questions</title>
+	<link href="styles.css" media="screen" rel="stylesheet">
 	<script src="jquery-1.7.2.min.js"></script>
 	<script>
-		$(document).ready(function(){
-			$('ul > li').click(function(){
-				var elem = $(this);
-				var id= elem.attr('id');
-				$.ajax('ready.php?check=' + id, {
-					success: function(){
-						elem.addClass('ready');
-					}
-				});
-			});
-		});
+		var id = '<?= ha($id) ?>';
+		var user = '<?= ha($user) ?>';
 	</script>
-	<style>
-		ul { margin: 0; padding: 0; list-style: none; }
-		ul > li { float: left; width: 5em; }
-		ul > li.ready { background-color: green; }
-	</style>
+	<script src="question.js"></script>
 </head>
 <body>
 
-<h1><?= $question ?></h1>
+<h1><?= h($id) ?><em></em></h1>
 
 <ul>
-<? foreach($users as $user): ?>
-	<li id="<?= $user ?>"><?= $user ?></li>
-<? endforeach ?>
 </ul>
 
 </body>
