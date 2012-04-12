@@ -11,7 +11,7 @@ function read_and_update_data($id, $handler){
 	$fd = fopen($_CONFIG['data_dir'] . '/' . basename($id), 'c+');
 	flock($fd, LOCK_EX);
 	
-	$data = json_ decode( stream_get_contents($fd), true );
+	$data = json_decode( stream_get_contents($fd), true );
 	if ($data == null){
 		$data = array('title' => null, 'users' => array());
 		$initialized_data = true;
@@ -21,6 +21,7 @@ function read_and_update_data($id, $handler){
 	
 	if ($updated_data or $initialized_data){
 		ftruncate($fd, 0);
+		fseek($fd, 0);
 		fwrite($fd, json_encode($updated_data));
 	}
 	

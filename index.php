@@ -2,11 +2,20 @@
 
 require('common.php');
 
-$id = basename($_GET['id']);
-$user = str_replace("\n", '', $_SERVER['PHP_AUTH_USER']);
+$id = basename(@$_GET['id']);
+$user = str_replace("\n", '', @$_SERVER['PHP_AUTH_USER']);
 
 if ( empty($id) or empty($user) )
 	die('ID and HTTP basic auth user is required');
+
+// Users send an AJAX POST request when they are ready, so set him/her to ready and quit
+if ( $_SERVER['REQUEST_METHOD'] == 'POST' ){
+	read_and_update_data($id, function($data) use($user) {
+		$data['users'][$user] = true;
+		return $data;
+	});
+	exit();
+}
 
 // Add current user to the user list of this poll if he/she isn't already in there
 read_and_update_data($id, function($data) use($user) {
@@ -33,6 +42,10 @@ read_and_update_data($id, function($data) use($user) {
 <body>
 
 <h1><?= h($id) ?><em></em></h1>
+
+<button id="ready">Fertig!</button>
+
+<h2>Teilnehmer</h2>
 
 <ul>
 </ul>

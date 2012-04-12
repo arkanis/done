@@ -1,0 +1,4 @@
+AuthType	basic
+AuthName	"Please log in with your HdM account"
+AuthUserFile	/home/steven/projects/poll/users
+Require	valid-user

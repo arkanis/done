@@ -1,19 +1,17 @@
-function poll(){
-	console.log('polling');
-	$.ajax('ready.php?poll=true', {
-		success: function(data){
-			console.log(data);
-			for(var i = 0; i < data.length; i++){
-				var ready_user = data[i];
-				console.log('user: ', ready_user);
-				$('#' + ready_user).addClass('ready');
-			}
-			
-			setTimeout(poll, 1000);
-		}
-	});
-}
-
 $(document).ready(function(){
-	setTimeout(poll, 1000);
+	$('button#clear').click(function(){
+		$.ajax(window.location.pathname + window.location.search, { type: 'POST' });
+		$('input#title').val('').keypress();
+		return false;
+	});
+	
+	$('input#title').keypress(function(){
+		var elem = $(this);
+		if ( elem.data('timer') )
+			clearTimeout(elem.data('timer'));
+		timer = setTimeout(function(){
+			$.ajax(window.location.pathname + window.location.search, { type: 'POST', data: { title: elem.val() } });
+		}, 500);
+		elem.data('timer', timer);
+	});
 });
