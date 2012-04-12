@@ -27,7 +27,7 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ){
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 	<meta charset="utf-8">
 	<title>Questions</title>
@@ -42,11 +42,11 @@ if ( $_SERVER['REQUEST_METHOD'] == 'POST' ){
 </head>
 <body>
 
-<h1><?= h($id) ?><input type="text" id="title" placeholder="Title"></h1>
-
-<button id="clear">Zurücksetzen</button>
-
-<h2>Teilnehmer</h2>
+<header>
+	<h1><?= h($id) ?></h1>
+	<input type="text" id="title" placeholder="Title">
+	<button id="reset">Reset</button>
+</header>
 
 <ul>
 </ul>

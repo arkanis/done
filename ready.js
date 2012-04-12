@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('button#clear').click(function(){
+	$('button#reset').click(function(){
 		$.ajax(window.location.pathname + window.location.search, { type: 'POST' });
 		$('input#title').val('').keypress();
 		return false;

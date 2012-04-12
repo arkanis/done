@@ -6,9 +6,9 @@ function poll(){
 		success: function(data){
 			if (data){
 				if (data.title)
-					$('h1 > em').text(data.title);
+					$('body > header > p').text(data.title);
 				else
-					$('h1 > em').text('');
+					$('body > header > p').text('');
 				
 				var this_user_ready = false;
 				$.each(data.users, function(name, ready){

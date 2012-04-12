@@ -41,11 +41,11 @@ read_and_update_data($id, function($data) use($user) {
 </head>
 <body>
 
-<h1><?= h($id) ?><em></em></h1>
-
-<button id="ready">Fertig!</button>
-
-<h2>Teilnehmer</h2>
+<header>
+	<h1><?= h($id) ?></h1>
+	<p></p>
+	<button id="ready">I'm done!</button>
+</header>
 
 <ul>
 </ul>

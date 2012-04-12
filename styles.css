@@ -1,11 +1,24 @@
 html, body { margin: 0; padding: 0; }
-body { margin: 1em; font-family: sans-serif; color: #333; background-color: #eee; }
+body { font-size: medium; font-family: sans-serif; color: #333; background-color: #eee; }
 
-h1 { font-size: 2em; color: orange; }
-h1 > input { margin: 0 0 0 0.25em; padding: 0; font-size: inherit; border: 1px dotted gray; color: inherit; background-color: #eee; }
-h1 > input:focus { background-color: white; }
-h1 > em { margin: 0 0 0 0.25em; font-style: normal; }
+header { display: block; overflow: hidden; margin: 0; padding: 0.5em; color: orange; background-color: #ddd; }
+header > h1 { display: inline; font-size: 2em; margin: 0; padding: 0; }
+header > p { display: inline; font-size: 2em; margin: 0; padding: 0; }
+header > input { display: inline; font-size: 2em; margin: 0; padding: 0; width: 12.5em;
+	border: 1px dotted gray; color: inherit; background-color: inherit; border-radius: 0.125em; }
+header > input:focus { background-color: #eee; }
+header > button { float: right; font-size: 1.5em; height: 1.67em; margin: 0; padding: 0 1em; vertical-align: top; border-radius: 0.125em; }
 
-ul { margin: 0; padding: 0; list-style: none; }
-ul > li { float: left; width: 5em; }
-ul > li.ready { background-color: green; }
+header > button { color: #333; border: 1px solid hsl(0, 0%, 65%); background: hsl(0, 0%, 90%); }
+header > button:enabled:active:hover { box-shadow: inset 1px 1px 2px rgba(0, 0, 0, 0.25); background: hsl(0, 0%, 87.5%); }
+
+header > button#ready { color: hsl(120, 30%, 40%); border-color: hsl(120, 30%, 60%); background-color: hsl(120, 30%, 85%); }
+header > button#ready:disabled { opacity: 0.5; }
+header > button#ready:enabled:active:hover { background-color: hsl(120, 30%, 82.5%); }
+
+ul { overflow: auto; margin: 1em; padding: 0; list-style: none; }
+ul > li { float: left; min-width: 5em; margin: 0 1em 1em 0; padding: 0.5em; text-align: center; }
+ul > li::after { content: 'on it'; display: block; font-size: 0.77em; }
+ul > li { background-color: hsl(0, 0%, 85%); border: 1px solid hsl(0, 0%, 75%); }
+ul > li.ready { color: hsl(120, 40%, 25%); background-color: hsl(120, 30%, 85%); border: 1px solid hsl(120, 30%, 75%); }
+ul > li.ready::after { content: 'done'; }
