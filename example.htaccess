@@ -1,0 +1,18 @@
+AuthType	basic
+AuthName	"Please log in"
+# Configure your HTTP authentication the way you like. Remember that Apache2 can
+# use LDAP, database files, SQL databases, etc. as authentication backend.
+AuthUserFile	/path/to/your/htpasswd-file
+Require	valid-user
+
+RewriteEngine	on
+# The path this script is run in. If the URL is http://example.com/tools/done/whatever
+# the ReweriteBase should be set to "/tools/done/" ("whatever" is the event name for
+# the script).
+RewriteBase		/done/
+
+RewriteCond		%{REQUEST_FILENAME}	!-f
+RewriteRule		^([^/-]+)$	index.php?id=$1	[last,qsappend,B]
+
+RewriteCond		%{REQUEST_FILENAME}	!-f
+RewriteRule		^([^/-]+)-ready$	ready.php?id=$1	[last,qsappend,B]
