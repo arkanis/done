@@ -9,16 +9,18 @@ if ( empty($id) or empty($user) )
 	die('ID and HTTP basic auth user is required');
 
 // Users send an AJAX POST request to set the title or clear the ready list
-if ( $_SERVER['REQUEST_METHOD'] == 'POST' ){
-	if ( isset($_POST['title']) ){
+if ( $_SERVER['REQUEST_METHOD'] == 'PUT' ){
+	$args = parse_str( file_get_contents("php://input") );
+	if ( isset($args['title']) ){
 		read_and_update_data($id, function($data) use($user) {
-			$data['title'] = $_POST['title'];
+			$data['title'] = $args['title'];
 			return $data;
 		});
 	} else {
 		read_and_update_data($id, function($data) use($user) {
-			foreach($data['users'] as $name => $ready)
-				$data['users'][$name] = false;
+			//foreach($data['users'] as $name => $ready)
+			//	$data['users'][$name] = false;
+			$data['users'] = array();
 			return $data;
 		});
 	}

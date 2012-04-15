@@ -1,3 +1,20 @@
+var introduction_pending = false;
+
+function send_introduction(){
+	// The introduction_pending variable keeps track of the introduction request. This
+	// way we avoid to send multiple introduction requests.
+	if (introduction_pending)
+		return;
+	
+	$.ajax(window.location.pathname + '?id=' + id, {
+		type: 'POST',
+		complete: function(){
+			introduction_pending = false;
+		}
+	});
+	introduction_pending = true;
+}
+
 function poll(){
 	$.ajax('data/' + id, {
 		dataType: 'json',
@@ -5,28 +22,35 @@ function poll(){
 		timeout: 1000,
 		success: function(data){
 			if (data){
+				// Set the event title if present
 				if (data.title)
 					$('body > header > p').text(data.title);
 				else
 					$('body > header > p').text('');
 				
-				var this_user_ready = false;
+				var users = [];
+				var is_user_in_list = false;
 				$.each(data.users, function(name, ready){
-					if (ready && name == user)
-						this_user_ready = true;
-					
-					var elem = $('#user_' + name);
-					if (elem.length == 0){
-						elem = $('<li>').text(name).attr('id', 'user_' + name);
-						$('ul').append(elem);
-					}
-					if (ready)
-						elem.addClass('ready');
-					else
-						elem.removeClass('ready');
+					users.push(name);
+					if (name == user)
+						is_user_in_list = true;
 				});
 				
-				if (this_user_ready)
+				var list = $('<ul>');
+				$.each(users.sort(), function(index, name){
+					var elem = $('<li>').text(name).data('user', name);
+					list.append(elem);
+					
+					if (data.users[name])
+						elem.addClass('ready');
+				});
+				$('body > ul').replaceWith(list);
+				
+				// If we are not in the list yet send an introduction.
+				if ( !is_user_in_list && !introduction_pending )
+					send_introduction();
+				
+				if ( is_user_in_list && data.users[user] == true )
 					$('button#ready').attr('disabled', 'disabled');
 				else
 					$('button#ready').removeAttr('disabled');
@@ -36,11 +60,12 @@ function poll(){
 }
 
 $(document).ready(function(){
+	send_introduction();
 	poll();
 	setInterval(poll, 1000);
 	
 	$('button#ready').click(function(){
-		$.ajax(window.location.pathname + '?id=' + id, { type: 'POST' });
+		$.ajax(window.location.pathname + '?id=' + id, { type: 'PUT' });
 		return false;
 	});
 });

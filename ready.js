@@ -1,6 +1,6 @@
 $(document).ready(function(){
 	$('button#reset').click(function(){
-		$.ajax(window.location.pathname + window.location.search, { type: 'POST' });
+		$.ajax(window.location.pathname + window.location.search, { type: 'PUT' });
 		$('input#title').val('').keypress();
 		return false;
 	});
@@ -10,7 +10,7 @@ $(document).ready(function(){
 		if ( elem.data('timer') )
 			clearTimeout(elem.data('timer'));
 		timer = setTimeout(function(){
-			$.ajax(window.location.pathname + window.location.search, { type: 'POST', data: { title: elem.val() } });
+			$.ajax(window.location.pathname + window.location.search, { type: 'PUT', data: { title: elem.val() } });
 		}, 500);
 		elem.data('timer', timer);
 	});
