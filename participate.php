@@ -11,7 +11,7 @@ if ( empty($id) or empty($user) )
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Questions</title>
+	<title><?= htmlspecialchars($id, ENT_QUOTES, 'UTF-8') ?></title>
 	<link href="styles.css" media="screen" rel="stylesheet">
 	<script src="jquery-1.7.2.min.js"></script>
 	<script>
