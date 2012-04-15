@@ -11,8 +11,43 @@ RewriteEngine	on
 # the script).
 RewriteBase		/done/
 
-RewriteCond		%{REQUEST_FILENAME}	!-f
-RewriteRule		^([^/-]+)$	index.php?id=$1	[last,qsappend,B]
+# GET /137		→	/participate.php?id=137
+RewriteCond	%{REQUEST_METHOD}	GET|HEAD
+RewriteCond	%{REQUEST_FILENAME}	!-f
+RewriteRule	^([^/.]+)$	participate.php?id=$1	[last,qsappend,B]
 
-RewriteCond		%{REQUEST_FILENAME}	!-f
-RewriteRule		^([^/-]+)-ready$	ready.php?id=$1	[last,qsappend,B]
+# GET /137/ready	→	/overview.php?id=137
+RewriteCond	%{REQUEST_METHOD}	GET|HEAD
+RewriteCond	%{REQUEST_FILENAME}	!-f
+RewriteRule	^([^/.]+)/ready$	overview.php?id=$1	[last,qsappend,B]
+
+
+# GET /137.json		→	/data/137.json
+RewriteCond	%{REQUEST_METHOD}	GET|HEAD
+RewriteRule	^([^/.]+).json$	data/$1.json	[last,qsappend,B]
+
+# PUT /137.json		→	/backend.php?id=137
+RewriteCond	%{REQUEST_METHOD}	PUT
+RewriteCond	%{REQUEST_FILENAME}	!-f
+RewriteRule	^([^/.]+).json$	backend.php?id=$1	[last,qsappend,B]
+
+# DELETE /137.json	→	/backend.php?id=137
+RewriteCond	%{REQUEST_METHOD}	DELETE
+RewriteCond	%{REQUEST_FILENAME}	!-f
+RewriteRule	^([^/.]+).json$	backend.php?id=$1	[last,qsappend,B]
+
+
+# POST /137.json		→	/backend.php?id=137
+RewriteCond	%{REQUEST_METHOD}	POST
+RewriteCond	%{REQUEST_FILENAME}	!-f
+RewriteRule	^([^/.]+).json$	backend.php?id=$1	[last,qsappend,B]
+
+# PUT /137.json/self	→	/backend.php?id=137&context=user
+RewriteCond	%{REQUEST_METHOD}	PUT
+RewriteCond	%{REQUEST_FILENAME}	!-f
+RewriteRule	^([^/.]+).json/self$	backend.php?id=$1&context=user	[last,qsappend,B]
+
+# DELETE /137.json/self	→	/backend.php?id=137&context=user
+RewriteCond	%{REQUEST_METHOD}	DELETE
+RewriteCond	%{REQUEST_FILENAME}	!-f
+RewriteRule	^([^/.]+).json/self$	backend.php?id=$1&context=user	[last,qsappend,B]
