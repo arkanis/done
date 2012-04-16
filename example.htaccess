@@ -5,6 +5,8 @@ AuthName	"Please log in"
 AuthUserFile	/path/to/your/htpasswd-file
 Require	valid-user
 
+Options	-Indexes
+
 RewriteEngine	on
 # The path this script is run in. If the URL is http://example.com/tools/done/whatever
 # the ReweriteBase should be set to "/tools/done/" ("whatever" is the event name for
@@ -12,11 +14,9 @@ RewriteEngine	on
 RewriteBase		/done/
 
 # GET /137		→	/participate.php?id=137
-# This rule also captures the index page without any id and therefore
-# displays the error message for missing arguments.
 RewriteCond	%{REQUEST_METHOD}	GET|HEAD
 RewriteCond	%{REQUEST_FILENAME}	!-f
-RewriteRule	^([^/.]*)$	participate.php?id=$1	[last,qsappend,B]
+RewriteRule	^([^/.]+)$	participate.php?id=$1	[last,qsappend,B]
 
 # GET /137/ready	→	/overview.php?id=137
 RewriteCond	%{REQUEST_METHOD}	GET|HEAD
